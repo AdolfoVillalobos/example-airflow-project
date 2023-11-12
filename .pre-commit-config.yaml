@@ -1,0 +1,24 @@
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+default_stages: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.1.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-yaml
+        exclude: |
+          (?x)(
+              mkdocs
+          )
+  # export python requirements
+  - repo: https://github.com/pdm-project/pdm
+    rev: 2.10.1
+    hooks:
+      - id: pdm-export
+        # command arguments, e.g.:
+        args: ['-o', 'requirements.txt', '--without-hashes']
+        files: ^pdm.lock$
